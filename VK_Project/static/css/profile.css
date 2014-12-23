@@ -1,0 +1,61 @@
+.student {
+    padding: 5px 35px 10px 35px;
+    font-size: 13px;
+    font-weight: 200;
+    color: #333333;
+}
+.change_photo{
+    margin-top: 10%;
+    width: 200px;
+}
+.friend-btn{
+    margin-top: 10%;
+    width: 100px;
+}
+.th{
+    text-align: center;
+}
+.student-info-text {
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+.student-info h6{
+    display: inline;
+    color: #777777;
+    font-size: 28px;
+    font-weight: normal;
+}
+.personal-details th {
+    width: 11em;
+}
+.photo-img {
+    height: 200px;
+    width: 200px;
+}
+.friend-img {
+    height: 100px;
+    width: 100px;
+}
+.student-info-title {
+    color: #1ab9eb;
+    font-size: 16px;
+    padding-bottom: 5px;
+    display: block;
+}
+.student-info h6{
+    display: inline;
+    color: #777777;
+    font-size: 28px;
+    font-weight: normal;
+}
+.tx{
+    height: 32px;
+    border-radius: 5px;
+}
+.st{
+    margin-top: -23px;
+}
+.container{
+    margin-top: 15px;
+}
+

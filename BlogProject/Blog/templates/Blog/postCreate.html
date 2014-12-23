@@ -1,0 +1,9 @@
+{% extends 'Blog/index.html' %}
+{% block content%}
+<form action="{% url 'new' %}" method="post">
+    {% csrf_token %}
+    <p><textarea name="title"></textarea></p>
+    <p><textarea name="post"></textarea></p>
+    <p><input type="submit" value="Post"></p>
+</form>
+{% endblock %}

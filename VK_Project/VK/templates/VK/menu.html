@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap-3.2.0-dist/css/bootstrap.min.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <script src="{% static "js/jquery-2.1.1.js" %}"></script>
+    <style type="text/css">
+        #tx {
+            height: 32px;
+            border-radius: 5px;
+        }
+
+        #st {
+            margin-top: -23px;
+        }
+
+        #modal_form {
+            width: 300px;
+            height: 300px;
+            border-radius: 5px;
+            border: 3px #000 solid;
+            background: #fff;
+            position: fixed;
+            top: 45%;
+            left: 50%;
+            margin-top: -150px;
+            margin-left: -150px;
+            display: none; 
+            opacity: 0;
+            z-index: 5;
+            padding: 20px 10px;
+        }
+
+
+        #modal_form #modal_close {
+            width: 21px;
+            height: 21px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            display: block;
+        }
+
+
+        #overlay {
+            z-index: 3;
+            position: fixed;
+            background-color: #000;
+            opacity: 0.8;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row container_row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="page-content jumbotron-white">
+                <div class="student">
+                    <div class="row student-info">
+                        <h1>ВКонтакте</h1>
+
+                        <div class="col-xs-3 col-sm-3 col-md-3">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="{% url 'profile' user_id=request.user.id %}">Моя страница</a></li>
+                                <li><a href="{% url 'friends:friends' %}">Мои друзья</a></li>
+                                <li><a href="{% url 'photo:all' %}">Все фото</a></li>
+                                <li><a href="{% url 'message:im' %}">Входящие</a></li>
+                                <li><a href="{% url 'message:om' %}">Исходящие</a></li>
+                                <li><a href="{% url 'all' %}">Все пользователи</a></li>
+                                <li><a href="{% url 'logout' %}">Выход</a></li>
+                            </ul>
+                        </div>
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="3954598459">
+    <data-source source="LOCAL" name="Django default" uuid="692183f6-f231-4faf-82e7-6392f1d97d69">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Дамир\PycharmProjects\Twitter2\base.db</jdbc-url>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+

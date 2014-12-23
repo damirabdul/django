@@ -1,0 +1,195 @@
+{% extends 'VK/menu.html' %}
+{% block content %}
+    <script>
+        function deleteform(post_id, user_id) {
+            $.ajax({
+                url: "/delete_post/",
+                type: "POST",
+                data: {
+                    postId: post_id,
+                    userId: user_id,
+                    csrfmiddlewaretoken: '{{csrf_token}}'
+                },
+                success: function (json) {
+                    console.log("Success");
+                    return false;
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log("Error");
+                }
+            });
+            return false;
+        }
+        function checkLength() {
+            var post = $('#tx');
+            var button = $('#st');
+            if (post.val().length > 10) {
+                button.hide();
+                alert("Длина поста не более 10 символов");
+            } else {
+                button.show();
+            }
+        }
+        ;
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#go').click(function (event) {
+                event.preventDefault();
+                $('#overlay').fadeIn(400,
+                        function () {
+                            $('#modal_form')
+                                    .css('display', 'block')
+                                    .animate({opacity: 1, top: '50%'}, 200);
+                        });
+            });
+            $('#modal_close, #overlay').click(function () {
+                $('#modal_form')
+                        .animate({opacity: 0, top: '45%'}, 200,
+                        function () {
+                            $(this).css('display', 'none');
+                            $('#overlay').fadeOut(400);
+                        }
+                );
+            });
+        });
+    </script>
+    <div class="col-xs-3 col-sm-3 col-md-3">
+        <img class="photo-img" src="{{ MEDIA_URL }}{{ info.avatar }}"/>
+        {% if request.user.id|add:"0" == request.path|slice:"9:-1"|add:"0" %}
+            <a href="{% url 'edit' %}">Редактировать</a>
+            <button id="go">Окно</button>
+        {% elif info in friends %}
+            <h4 style="margin-left: 15px;">{{ info.user.username }} у вас в друзьях</h4>
+        {% else %}
+            <form action="{% url 'friends:add' friend_id=request.path|slice:"9:-1" %}" method="post">
+                {% csrf_token %}
+                <input type="submit" name="add" value="Добавить в друзья"
+                       class="change_photo btn btn-blue">
+            </form>
+        {% endif %}
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div id="modal_form">
+                    <span id="modal_close">X</span>
+                    Привет, {{ request.user.username }}
+                </div>
+                <div id="overlay"></div>
+                <h6>{{ info.user.username }}</h6>
+
+                <div class="row student-info-text">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <span class="student-info-title">Персональные данные:</span>
+                        <table class="personal-details">
+                            <tr>
+                                <th>Дата рождения:</th>
+                                <td>
+                                    {{ info.birthday }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Город:</th>
+                                <td>
+                                    {{ info.city }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Интересы:</th>
+                                <td>
+                                    {{ info.interests }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Пол:</th>
+                                <td>
+                                    {{ info.sex }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <br><br>
+
+                <div class="row student-info-text">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <span class="student-info-title">Стена:</span>
+
+                        <form action="{% url 'profile' user_id=request.path|slice:"9:-1" %}" method="post">
+                            {% csrf_token %}
+                            <textarea id="tx" name="text" rows="1" oninput="checkLength()"></textarea>
+                            <input id="st" type="submit" class="btn btn-default "
+                                   value="Написать">
+                        </form>
+                        {% if posts %}
+                            <table class="personal-details">
+                                <tr>
+                                    <th>Отправитель</th>
+                                    <th>Сообщение</th>
+                                    <th>Дата</th>
+                                </tr>
+                                {% for p in posts %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'profile' user_id=p.from_whom.id %}">{{ p.from_whom.username }}</a>
+                                        </td>
+                                        <td>
+                                            {{ p.post_text }}
+                                        </td>
+                                        <td>
+                                            {{ p.post_date }}
+                                        </td>
+                                        {% if request.user.id == p.from_whom.id or request.user.id|add:"0" == request.path|slice:"9:-1"|add:"0" %}
+                                            <td>
+                                                {% csrf_token %}
+                                                <input type="button" name="deleteMessage"
+                                                       class="btn btn-inverse"
+                                                       onclick="deleteform({{ p.id }},{{ request.path|slice:"9:-1" }})"
+                                                       value="X">
+                                            </td>
+                                        {% endif %}
+                                        <td>
+                                            <form method="POST" action="{% url 'addComment' %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="postId" value="{{ p.id }}">
+                                                <input type="hidden" name="userId"
+                                                       value="{{ request.path|slice:"9:-1" }}">
+                                                <textarea name="comment" rows="1"></textarea>
+                                                <input type="submit" value="Коммент" class="btn btn-default ">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <br>
+                                    {% if p.comment_set.all %}
+                                        {% for c in p.comment_set.all %}
+                                            <tr style="margin-left: 20px">
+                                                <td>
+                                                    {{ c.owner.username }}
+                                                </td>
+                                                <td>
+                                                    {{ c.comment_text }}
+                                                </td>
+                                                <td>
+                                                    <form method="POST" action="{% url 'deleteComment' %}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="commentId" value="{{ c.id }}">
+                                                        <input type="hidden" name="userId"
+                                                               value="{{ request.path|slice:"9:-1" }}">
+                                                        <input type="submit" name="deleteComment"
+                                                               class="btn btn-inverse"
+                                                               value="X">
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

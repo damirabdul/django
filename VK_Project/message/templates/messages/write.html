@@ -1,0 +1,16 @@
+{% extends 'VK/menu.html' %}
+{% block content %}
+<div class="right_column col-xs-6 col-sm-6 col-md-6">
+    <h1>Написать сообщение</h1><br><br>
+
+    <h2>Кому : {{ to.username }}</h2><br>
+
+    <form action="{% url 'message:write' userId=to.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="userId" value="{{ to.id }}">
+        <textarea id="tx" name="text" rows="6" required=""></textarea><br><br>
+        <input type="submit" name="send" class="btn btn-default "
+               value="Написать">
+    </form>
+</div>
+{% endblock %}

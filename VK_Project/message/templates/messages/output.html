@@ -1,0 +1,42 @@
+{% extends 'VK/menu.html' %}
+{% block content %}
+    <div class="right_column col-xs-6 col-sm-6 col-md-6">
+        <h2>Исходящие</h2>
+        <br><br>
+        {% if message %}
+            <table>
+                <tr>
+                    <th class="th">Кому</th>
+                    <th class="th">Сообщение</th>
+                    <th class="th">Дата</th>
+                    <th class="th">Удалить</th>
+                </tr>
+                {% for m in message %}
+                    <tr>
+                        <td width="200" valign="top" align="center">
+                            {{ m.to_who.username }}
+                        </td>
+                        <td width="500" valign="top" align="center">
+                            {{ m.message_text }}
+                        </td>
+                        <td width="300" valign="top" align="center">
+                            {{ m.message_date }}
+                        </td>
+                        <td valign="top" align="center">
+                            <form action="{% url 'message:delete' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="messageId"
+                                       value="{{ m.id }}">
+                                <input type="hidden" name="place" value="om"/>
+                                <input type="submit" name="deleteMessage"
+                                       class="btn btn-inverse" value="X">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h3>Сообщений нет</h3>
+        {% endif %}
+    </div>
+{% endblock %}

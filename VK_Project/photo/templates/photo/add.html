@@ -1,0 +1,10 @@
+{% extends 'VK/menu.html' %}
+{% block content %}
+    <div class="right_column col-xs-6 col-sm-6 col-md-6">
+        <form action="{% url 'photo:add' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ picture_form.as_p }}
+            <input type="submit" name="photo" value="Upload" class="change_photo btn btn-blue">
+        </form>
+    </div>
+{% endblock %}

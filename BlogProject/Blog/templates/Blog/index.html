@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <p>
+        <a href="{% url "posts" %}">Posts</a>
+        <a href="{% url "new" %}">New</a>
+        <a href="{% url "posts" %}">Search</a>
+    </p>
+    {% block content %}{% endblock %}
+</body>
+</html>

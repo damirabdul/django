@@ -1,0 +1,33 @@
+{% extends 'VK/menu.html' %}
+{% block content %}
+    <div class="right_column col-xs-6 col-sm-6 col-md-6">
+        <h2>Мои друзья</h2>
+        <table>
+            {% if friends %}
+                {% for f in friends %}
+                    <tr>
+                        <td>
+                            <img class="friend-img" src="{{ MEDIA_URL }}{{ f.avatar }}">
+                        </td>
+                        <td width="250px" valign="top" align="center">
+                            <h6>
+                                <a href="{% url 'profile' user_id=f.user.id %}">{{ f.user.username }}</a>
+                            </h6>
+                        </td>
+                        <td>
+                            <form action="{% url "friends:delete" %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="friendId" value="{{ f.user.id }}">
+                                <input type="submit" name="remove" value="Удалить"
+                                       class="friend-btn btn btn-blue"><br>
+                            </form>
+                            <h3><a href="{% url 'message:write' userId=f.user.id %}">Написать</a></h3>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <h2>Список друзей пуст</h2>
+            {% endif %}
+        </table>
+    </div>
+{% endblock %}
